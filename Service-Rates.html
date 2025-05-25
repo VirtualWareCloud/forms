@@ -7,26 +7,50 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+      background: #000000;
       font-family: 'Segoe UI', sans-serif;
       color: #fff;
       padding: 30px;
     }
 
     .form-container {
-      max-width: 900px;
+      max-width: 950px;
       margin: auto;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.03);
       border-radius: 2rem;
       padding: 30px;
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
-      border: 2px solid gold;
-      animation: sparkle 5s linear infinite;
+      position: relative;
+      overflow: hidden;
     }
 
-    @keyframes sparkle {
-      0%, 100% { box-shadow: 0 0 20px gold; }
-      50% { box-shadow: 0 0 40px gold, 0 0 60px #ffd700; }
+    .form-container::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      background: conic-gradient(
+        from 0deg,
+        gold,
+        red,
+        gold,
+        red,
+        gold
+      );
+      z-index: -1;
+      animation: borderLight 6s linear infinite;
+      border-radius: 2rem;
+      filter: blur(3px);
+    }
+
+    @keyframes borderLight {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
     }
 
     label {
@@ -70,16 +94,21 @@
     <h2>Services and Rates</h2>
     <form id="serviceForm">
       <div class="container">
-        <!-- Service and Price Rows -->
         <script>
           const services = [
             "GFE", "BDSM", "Role Play", "Massage", "Anal", "Oral", "Deep Throat", "Dominatrix",
             "Submissive Service", "Striptease", "Couples Session", "Fantasy Fulfillment", "Cuddling",
-            "Overnight Stay", "Pegging", "Foot Fetish", "Bondage", "Squirting Show", "Mutual Masturbation", "Voyeurism"
+            "Overnight Stay", "Pegging", "Foot Fetish", "Bondage", "Squirting Show", "Mutual Masturbation",
+            "Voyeurism", "Full House", "Rimming", "I am bringing a girlfriend"
           ];
+
+          const durations = ["30MIN", "1HR", "1HR & 30MIN", "2HR", "2HR & 30MIN", "3HR"];
+
           for (let i = 1; i <= 10; i++) {
             document.write('<div class="row g-3 mb-2">');
-            document.write(`<div class="col-md-6">
+
+            // Service
+            document.write(`<div class="col-md-4">
               <label for="service${i}">Service ${i}</label>
               <select class="form-select" id="service${i}" name="service${i}">
                 <option value="">Select a Service</option>`);
@@ -88,31 +117,27 @@
             });
             document.write(`</select></div>`);
 
-            document.write(`<div class="col-md-6">
+            // Duration
+            document.write(`<div class="col-md-4">
+              <label for="duration${i}">Duration</label>
+              <select class="form-select" id="duration${i}" name="duration${i}">
+                <option value="">Select Duration</option>`);
+            durations.forEach(d => {
+              document.write(`<option value="${d}">${d}</option>`);
+            });
+            document.write(`</select></div>`);
+
+            // Price
+            document.write(`<div class="col-md-4">
               <label for="price${i}">Price</label>
-              <select class="form-select" id="price${i}" name="price${i}">`);
+              <select class="form-select" id="price${i}" name="price${i}" required>
+                <option value="">Select Price</option>`);
             for (let r = 500; r <= 2000; r += 50) {
               document.write(`<option value="R${r}">R${r}</option>`);
             }
             document.write(`</select></div></div>`);
           }
         </script>
-
-        <!-- Duration -->
-        <div class="mb-3">
-          <label for="duration">Session Duration</label>
-          <select class="form-select" id="duration" name="duration">
-            <script>
-              const durations = [30, 60, 90, 120, 150, 180];
-              durations.forEach(min => {
-                let hrs = Math.floor(min / 60);
-                let mins = min % 60;
-                let label = (hrs > 0 ? hrs + "HR" : "") + (mins > 0 ? " & " + mins + "MIN" : "");
-                document.write(`<option value="${label}">${label}</option>`);
-              });
-            </script>
-          </select>
-        </div>
 
         <!-- Date & Time -->
         <div class="mb-3">
@@ -136,14 +161,15 @@
 
       for (let i = 1; i <= 10; i++) {
         let service = formData.get(`service${i}`);
+        let duration = formData.get(`duration${i}`);
         let price = formData.get(`price${i}`);
+
         if (service && price) {
-          message += `Service ${i}: ${service} - ${price}\n`;
+          message += `Service ${i}: ${service}${duration ? " for " + duration : ""} - ${price}\n`;
         }
       }
 
-      message += `\nSession Duration: ${formData.get("duration")}\n`;
-      message += `Date & Time: ${formData.get("availability")}\n\n`;
+      message += `\nDate & Time: ${formData.get("availability")}\n\n`;
       message += `Motivate me to book you 💋 – send me a sexy full body pic 📸✨`;
 
       const encodedMsg = encodeURIComponent(message);
