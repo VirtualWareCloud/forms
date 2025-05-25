@@ -16,41 +16,13 @@
     .form-container {
       max-width: 950px;
       margin: auto;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.05);
       border-radius: 2rem;
       padding: 30px;
       position: relative;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+      border: 2px solid gold;
       overflow: hidden;
-    }
-
-    .form-container::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      width: calc(100% + 4px);
-      height: calc(100% + 4px);
-      background: conic-gradient(
-        from 0deg,
-        gold,
-        red,
-        gold,
-        red,
-        gold
-      );
-      z-index: -1;
-      animation: borderLight 6s linear infinite;
-      border-radius: 2rem;
-      filter: blur(3px);
-    }
-
-    @keyframes borderLight {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
     }
 
     label {
@@ -139,10 +111,10 @@
           }
         </script>
 
-        <!-- Date & Time -->
+        <!-- Availability -->
         <div class="mb-3">
-          <label for="availability">Date & Time</label>
-          <input type="datetime-local" class="form-control" id="availability" name="availability" required />
+          <label for="availability">What is your availability</label>
+          <input type="datetime-local" class="form-control" id="availability" name="availability" />
         </div>
 
         <!-- Submit -->
@@ -156,8 +128,10 @@
   <script>
     document.getElementById("serviceForm").addEventListener("submit", function(e){
       e.preventDefault();
-      let formData = new FormData(e.target);
+      const form = e.target;
+      const formData = new FormData(form);
       let message = "New Booking Request:\n\n";
+      let hasService = false;
 
       for (let i = 1; i <= 10; i++) {
         let service = formData.get(`service${i}`);
@@ -166,10 +140,17 @@
 
         if (service && price) {
           message += `Service ${i}: ${service}${duration ? " for " + duration : ""} - ${price}\n`;
+          hasService = true;
         }
       }
 
-      message += `\nDate & Time: ${formData.get("availability")}\n\n`;
+      const availability = formData.get("availability");
+      if (hasService && !availability) {
+        alert("Please provide your availability if a service is selected.");
+        return;
+      }
+
+      message += `\nAvailability: ${availability || 'Not specified'}\n\n`;
       message += `Motivate me to book you 💋 – send me a sexy full body pic 📸✨`;
 
       const encodedMsg = encodeURIComponent(message);
