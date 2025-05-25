@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Services and Rates</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      padding: 30px;
+    }
+
+    .form-container {
+      max-width: 900px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 2rem;
+      padding: 30px;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+      border: 2px solid gold;
+      animation: sparkle 5s linear infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { box-shadow: 0 0 20px gold; }
+      50% { box-shadow: 0 0 40px gold, 0 0 60px #ffd700; }
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    select, input {
+      margin-bottom: 15px;
+      border-radius: 1rem;
+    }
+
+    .btn-submit {
+      background: gold;
+      border: none;
+      font-weight: bold;
+      color: #000;
+      padding: 12px 25px;
+      border-radius: 50px;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    }
+
+    .btn-submit:hover {
+      background: #ffcc00;
+    }
+
+    .row.g-3 {
+      align-items: center;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-shadow: 0 0 10px gold;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Services and Rates</h2>
+    <form id="serviceForm">
+      <div class="container">
+        <!-- Service and Price Rows -->
+        <script>
+          const services = [
+            "GFE", "BDSM", "Role Play", "Massage", "Anal", "Oral", "Deep Throat", "Dominatrix",
+            "Submissive Service", "Striptease", "Couples Session", "Fantasy Fulfillment", "Cuddling",
+            "Overnight Stay", "Pegging", "Foot Fetish", "Bondage", "Squirting Show", "Mutual Masturbation", "Voyeurism"
+          ];
+          for (let i = 1; i <= 10; i++) {
+            document.write('<div class="row g-3 mb-2">');
+            document.write(`<div class="col-md-6">
+              <label for="service${i}">Service ${i}</label>
+              <select class="form-select" id="service${i}" name="service${i}">
+                <option value="">Select a Service</option>`);
+            services.forEach(service => {
+              document.write(`<option value="${service}">${service}</option>`);
+            });
+            document.write(`</select></div>`);
+
+            document.write(`<div class="col-md-6">
+              <label for="price${i}">Price</label>
+              <select class="form-select" id="price${i}" name="price${i}">`);
+            for (let r = 500; r <= 2000; r += 50) {
+              document.write(`<option value="R${r}">R${r}</option>`);
+            }
+            document.write(`</select></div></div>`);
+          }
+        </script>
+
+        <!-- Duration -->
+        <div class="mb-3">
+          <label for="duration">Session Duration</label>
+          <select class="form-select" id="duration" name="duration">
+            <script>
+              const durations = [30, 60, 90, 120, 150, 180];
+              durations.forEach(min => {
+                let hrs = Math.floor(min / 60);
+                let mins = min % 60;
+                let label = (hrs > 0 ? hrs + "HR" : "") + (mins > 0 ? " & " + mins + "MIN" : "");
+                document.write(`<option value="${label}">${label}</option>`);
+              });
+            </script>
+          </select>
+        </div>
+
+        <!-- Date & Time -->
+        <div class="mb-3">
+          <label for="availability">Date & Time</label>
+          <input type="datetime-local" class="form-control" id="availability" name="availability" required />
+        </div>
+
+        <!-- Submit -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-submit mt-3 w-50">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("serviceForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      let formData = new FormData(e.target);
+      let message = "New Booking Request:\n\n";
+
+      for (let i = 1; i <= 10; i++) {
+        let service = formData.get(`service${i}`);
+        let price = formData.get(`price${i}`);
+        if (service && price) {
+          message += `Service ${i}: ${service} - ${price}\n`;
+        }
+      }
+
+      message += `\nSession Duration: ${formData.get("duration")}\n`;
+      message += `Date & Time: ${formData.get("availability")}\n\n`;
+      message += `Motivate me to book you 💋 – send me a sexy full body pic 📸✨`;
+
+      const encodedMsg = encodeURIComponent(message);
+      const whatsappURL = `https://wa.me/27636409023?text=${encodedMsg}`;
+      window.open(whatsappURL, "_blank");
+    });
+  </script>
+</body>
+</html>
