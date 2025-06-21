@@ -124,17 +124,134 @@
   <div class="form-container">
     <h1>Website Requirements Form</h1>
     <form id="whatsappForm">
-      <!-- All your existing input fields remain unchanged -->
-      <!-- For brevity, not duplicating all 22 questions here -->
+      <label>1. Business / Project Name</label>
+      <input type="text" name="Business Name" required>
 
-      <!-- ... insert your form fields here (same as your current structure) ... -->
+      <label>2. Do you have a logo?</label>
+      <select name="Logo">
+        <option value="Yes">Yes</option>
+        <option value="No">No - need design</option>
+      </select>
+
+      <label>3. Website Purpose</label>
+      <input type="text" name="Purpose">
+
+      <label>4. Target Audience</label>
+      <input type="text" name="Audience">
+
+      <label>5. Number of Pages</label>
+      <input type="text" name="Pages">
+
+      <label>6. Written Content Ready?</label>
+      <select name="Content Ready">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label>7. Features Needed</label>
+      <textarea name="Features"></textarea>
+
+      <label>8. Mobile/Tablet Support?</label>
+      <select name="Responsive">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label>9. Color Theme / Style</label>
+      <input type="text" name="Style">
+
+      <label>10. Reference Website 1</label>
+      <input type="url" name="Reference 1">
+      <label>11. Reference Website 2</label>
+      <input type="url" name="Reference 2">
+      <label>12. Reference Website 3</label>
+      <input type="url" name="Reference 3">
+
+      <label>13. Domain & Hosting</label>
+      <select name="Hosting">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label>14. Email Setup Help?</label>
+      <select name="Email Setup">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label>15. Include Animations?</label>
+      <select name="Animations">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label>16. SEO Optimization?</label>
+      <select name="SEO">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label>17. Maintenance Needed?</label>
+      <select name="Maintenance">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label>18. Deadline or Launch Date?</label>
+      <select name="Deadline">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label>19. Launch Date</label>
+      <input type="date" name="Launch Date">
+
+      <label>20. WhatsApp</label>
+      <input type="text" name="WhatsApp">
+
+      <label>21. Email</label>
+      <input type="email" name="Email">
+
+      <label>22. Telegram</label>
+      <input type="text" name="Telegram">
+
+      <label>23. Social Media Links (all platforms)</label>
+      <textarea name="Socials"></textarea>
+
+      <label>24. Multilingual Support?</label>
+      <select name="Multilingual">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label>25. E-Commerce/Shop Needed?</label>
+      <select name="E-Commerce">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label>26. Estimated Budget</label>
+      <select name="Budget">
+        <option value="R1000">R1000</option>
+        <option value="R2000">R2000</option>
+        <option value="R3000">R3000</option>
+        <option value="R4000">R4000</option>
+        <option value="R5000">R5000</option>
+        <option value="R6000">R6000</option>
+        <option value="R7000">R7000</option>
+        <option value="R8000">R8000</option>
+        <option value="R9000">R9000</option>
+        <option value="R10000+">R10000+</option>
+      </select>
+
+      <label>27. Anything else to include or avoid?</label>
+      <textarea name="Notes"></textarea>
 
       <button type="submit" class="submit-btn">Submit</button>
     </form>
   </div>
 
   <script>
-    // Generate stars
     for (let i = 0; i < 150; i++) {
       const star = document.createElement('div');
       star.className = 'star';
@@ -144,20 +261,13 @@
       document.getElementById('stars').appendChild(star);
     }
 
-    // WhatsApp Submission Handler
     document.getElementById('whatsappForm').addEventListener('submit', function (e) {
       e.preventDefault();
-
-      const form = e.target;
-      const entries = Array.from(form.elements)
-        .filter(el => el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT')
-        .map(el => `${el.previousElementSibling?.innerText || el.placeholder || el.id}: ${el.value}`)
-        .join('\n');
-
-      const message = encodeURIComponent(`📋 Website Requirements:\n\n${entries}`);
-      const whatsappNumber = "27820412395"; // International format
-      const url = `https://wa.me/${whatsappNumber}?text=${message}`;
-      window.open(url, '_blank');
+      const form = new FormData(e.target);
+      const message = Array.from(form.entries()).map(([k, v]) => `${k}: ${v}`).join('\n');
+      const encoded = encodeURIComponent(`📋 Website Requirements:\n\n${message}`);
+      const whatsapp = "27820412395";
+      window.open(`https://wa.me/${whatsapp}?text=${encoded}`, '_blank');
     });
   </script>
 </body>
